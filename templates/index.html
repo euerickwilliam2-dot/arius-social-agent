@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Arius Social Agent</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            arius: {
+              50:  '#f5f3ff',
+              100: '#ede9fe',
+              400: '#a78bfa',
+              500: '#8b5cf6',
+              600: '#7c3aed',
+              700: '#6d28d9',
+              800: '#5b21b6',
+              900: '#4c1d95',
+              950: '#2e1065',
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    body { background: #0f0a1e; }
+    .gradient-bg { background: linear-gradient(135deg, #1e0a3c 0%, #0f0a1e 50%, #1a0a2e 100%); }
+    .card { background: rgba(124, 58, 237, 0.05); border: 1px solid rgba(124, 58, 237, 0.2); }
+    .input-field {
+      background: rgba(124, 58, 237, 0.08);
+      border: 1px solid rgba(124, 58, 237, 0.3);
+      color: #e9d5ff;
+      transition: all 0.2s;
+    }
+    .input-field:focus {
+      outline: none;
+      border-color: #7c3aed;
+      box-shadow: 0 0 0 2px rgba(124, 58, 237, 0.25);
+      background: rgba(124, 58, 237, 0.12);
+    }
+    .input-field::placeholder { color: #6b7280; }
+    .btn-primary {
+      background: linear-gradient(135deg, #7c3aed, #5b21b6);
+      transition: all 0.2s;
+    }
+    .btn-primary:hover { background: linear-gradient(135deg, #8b5cf6, #6d28d9); transform: translateY(-1px); }
+    .stage-badge { background: rgba(124, 58, 237, 0.15); border: 1px solid rgba(124, 58, 237, 0.4); }
+    .loader { display: none; }
+    .loading .loader { display: flex; }
+    .loading .btn-text { display: none; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .spin { animation: spin 1s linear infinite; }
+  </style>
+</head>
+<body class="gradient-bg min-h-screen text-white font-sans">
+
+  <!-- Header -->
+  <header class="border-b border-arius-800/40 px-6 py-4">
+    <div class="max-w-4xl mx-auto flex items-center gap-3">
+      <div class="w-9 h-9 rounded-lg bg-arius-600 flex items-center justify-center font-black text-white text-lg">A</div>
+      <div>
+        <span class="font-bold text-arius-400 text-lg tracking-wide">ARIUS</span>
+        <span class="text-gray-500 text-sm ml-2">Social Agent</span>
+      </div>
+      <div class="ml-auto">
+        <span class="text-xs text-arius-400 bg-arius-900/50 px-3 py-1 rounded-full border border-arius-700/50">
+          ✦ Powered by Claude AI
+        </span>
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-4xl mx-auto px-6 py-12">
+
+    <!-- Hero -->
+    <div class="text-center mb-12">
+      <h1 class="text-4xl font-black mb-3">
+        <span class="text-white">Planejamento Editorial</span><br/>
+        <span class="text-arius-400">com Inteligência Artificial</span>
+      </h1>
+      <p class="text-gray-400 text-lg max-w-xl mx-auto">
+        Preencha o perfil do negócio. O agente gera estratégia completa de 90 dias para Instagram.
+      </p>
+    </div>
+
+    <form action="/gerar" method="POST" id="mainForm" class="space-y-8">
+
+      <!-- ETAPA 1 -->
+      <div class="card rounded-2xl p-6">
+        <div class="flex items-center gap-3 mb-6">
+          <span class="stage-badge text-arius-400 text-xs font-bold px-3 py-1 rounded-full">ETAPA 1</span>
+          <h2 class="font-bold text-white text-lg">Entender o Jogo</h2>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div class="md:col-span-2">
+            <label class="block text-xs text-gray-400 mb-1.5 uppercase tracking-wider">Instagram da empresa / perfil</label>
+            <input name="instagram" type="text" placeholder="@ariusagency" required
+              class="input-field w-full rounded-xl px-4 py-3 text-sm" />
+          </div>
+          <div>
+            <label class="block text-xs text-gray-400 mb-1.5 uppercase tracking-wider">Segmento / nicho</label>
+            <input name="segmento" type="text" placeholder="Agência de marketing digital e IA" required
+              class="input-field w-full rounded-xl px-4 py-3 text-sm" />
+          </div>
+          <div>
+            <label class="block text-xs text-gray-400 mb-1.5 uppercase tracking-wider">Público-alvo</label>
+            <input name="publico" type="text" placeholder="Donos de negócio que querem crescer online" required
+              class="input-field w-full rounded-xl px-4 py-3 text-sm" />
+          </div>
+          <div class="md:col-span-2">
+            <label class="block text-xs text-gray-400 mb-1.5 uppercase tracking-wider">Problema que resolve</label>
+            <textarea name="problema" rows="2" placeholder="Atração de clientes (tráfego), posicionamento online, automação de atendimento com IA" required
+              class="input-field w-full rounded-xl px-4 py-3 text-sm resize-none"></textarea>
+          </div>
+          <div>
+            <label class="block text-xs text-gray-400 mb-1.5 uppercase tracking-wider">Faixa de renda do público</label>
+            <input name="preco_publico" type="text" placeholder="30-100k+ mensais"
+              class="input-field w-full rounded-xl px-4 py-3 text-sm" />
+          </div>
+          <div>
+            <label class="block text-xs text-gray-400 mb-1.5 uppercase tracking-wider">Estado atual (seguidores, clientes)</label>
+            <input name="estado_atual" type="text" placeholder="0 seguidores, 1 cliente, CLT"
+              class="input-field w-full rounded-xl px-4 py-3 text-sm" />
+          </div>
+        </div>
+      </div>
+
+      <!-- ETAPA 2 -->
+      <div class="card rounded-2xl p-6">
+        <div class="flex items-center gap-3 mb-6">
+          <span class="stage-badge text-arius-400 text-xs font-bold px-3 py-1 rounded-full">ETAPA 2</span>
+          <h2 class="font-bold text-white text-lg">Posicionamento</h2>
+        </div>
+        <div class="space-y-4">
+          <div>
+            <label class="block text-xs text-gray-400 mb-1.5 uppercase tracking-wider">Posicionamento da empresa</label>
+            <input name="posicionamento" type="text" placeholder="Ajudamos negócios a crescerem todos os dias com tráfego, posicionamento e automação inteligente" required
+              class="input-field w-full rounded-xl px-4 py-3 text-sm" />
+          </div>
+          <div>
+            <label class="block text-xs text-gray-400 mb-1.5 uppercase tracking-wider">Produtos / serviços e preços</label>
+            <textarea name="produtos" rows="4" placeholder="Pacote mensal: tráfego + criativo + site + social media = R$1.500&#10;Face Ads: R$1.000 | Google Ads: R$1.000&#10;Landing Page: R$749 | Site: R$900&#10;Agente de IA: em aberto" required
+              class="input-field w-full rounded-xl px-4 py-3 text-sm resize-none"></textarea>
+          </div>
+        </div>
+      </div>
+
+      <!-- ETAPA 3 -->
+      <div class="card rounded-2xl p-6">
+        <div class="flex items-center gap-3 mb-6">
+          <span class="stage-badge text-arius-400 text-xs font-bold px-3 py-1 rounded-full">ETAPA 3</span>
+          <h2 class="font-bold text-white text-lg">Aquisição e Canais</h2>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div class="md:col-span-2">
+            <label class="block text-xs text-gray-400 mb-1.5 uppercase tracking-wider">Canais de aquisição</label>
+            <input name="canais" type="text" placeholder="WhatsApp, Instagram, tráfego pago, orgânico, parcerias com agências" required
+              class="input-field w-full rounded-xl px-4 py-3 text-sm" />
+          </div>
+          <div>
+            <label class="block text-xs text-gray-400 mb-1.5 uppercase tracking-wider">Onde encontrar leads</label>
+            <input name="leads" type="text" placeholder="Instagram, vídeos prontos de prospecção"
+              class="input-field w-full rounded-xl px-4 py-3 text-sm" />
+          </div>
+          <div>
+            <label class="block text-xs text-gray-400 mb-1.5 uppercase tracking-wider">Ferramentas de gestão</label>
+            <input name="ferramentas" type="text" placeholder="ClickUp, Google Agenda"
+              class="input-field w-full rounded-xl px-4 py-3 text-sm" />
+          </div>
+        </div>
+      </div>
+
+      <!-- ETAPA 4 -->
+      <div class="card rounded-2xl p-6">
+        <div class="flex items-center gap-3 mb-6">
+          <span class="stage-badge text-arius-400 text-xs font-bold px-3 py-1 rounded-full">ETAPA 4</span>
+          <h2 class="font-bold text-white text-lg">Meta, Série e Processo</h2>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <label class="block text-xs text-gray-400 mb-1.5 uppercase tracking-wider">Meta de faturamento</label>
+            <input name="meta" type="text" placeholder="R$10.000 líquido em 90 dias" required
+              class="input-field w-full rounded-xl px-4 py-3 text-sm" />
+          </div>
+          <div>
+            <label class="block text-xs text-gray-400 mb-1.5 uppercase tracking-wider">Rotina disponível</label>
+            <input name="rotina" type="text" placeholder="6h/dia divididas (3h manhã, 3h noite) + CLT"
+              class="input-field w-full rounded-xl px-4 py-3 text-sm" />
+          </div>
+          <div>
+            <label class="block text-xs text-gray-400 mb-1.5 uppercase tracking-wider">Série de conteúdo principal</label>
+            <input name="serie" type="text" placeholder="0 a 10k em 90 dias sendo CLT"
+              class="input-field w-full rounded-xl px-4 py-3 text-sm" />
+          </div>
+          <div>
+            <label class="block text-xs text-gray-400 mb-1.5 uppercase tracking-wider">Objetivo em 90 dias</label>
+            <input name="objetivo_90" type="text" placeholder="10k MRR, 7 clientes no pacote mensal"
+              class="input-field w-full rounded-xl px-4 py-3 text-sm" />
+          </div>
+          <div class="md:col-span-2">
+            <label class="block text-xs text-gray-400 mb-1.5 uppercase tracking-wider">Contexto extra (opcional)</label>
+            <textarea name="contexto" rows="2" placeholder="Sou CLT, tenho 1 cliente atual, sócio chama Moisés, agência chama Arius Agency, cor roxa..."
+              class="input-field w-full rounded-xl px-4 py-3 text-sm resize-none"></textarea>
+          </div>
+        </div>
+      </div>
+
+      <!-- Submit -->
+      <div class="text-center pt-4">
+        <button type="submit" id="submitBtn"
+          class="btn-primary text-white font-bold px-12 py-4 rounded-2xl text-lg shadow-lg shadow-arius-900/50 inline-flex items-center gap-3">
+          <span class="btn-text">✦ Gerar Planejamento com IA</span>
+          <span class="loader items-center gap-2">
+            <svg class="spin w-5 h-5" fill="none" viewBox="0 0 24 24">
+              <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+              <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
+            </svg>
+            Gerando estratégia...
+          </span>
+        </button>
+        <p class="text-gray-500 text-sm mt-3">Leva ~30 segundos. Claude analisa e monta tudo.</p>
+      </div>
+
+    </form>
+  </main>
+
+  <footer class="text-center py-8 text-gray-600 text-xs">
+    Arius Agency · Social Media Agent · claude-sonnet-4-6
+  </footer>
+
+  <script>
+    document.getElementById('mainForm').addEventListener('submit', function() {
+      document.getElementById('submitBtn').classList.add('loading');
+      document.getElementById('submitBtn').disabled = true;
+    });
+  </script>
+</body>
+</html>
