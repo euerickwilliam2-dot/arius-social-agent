@@ -17,7 +17,8 @@ try:
 except Exception:
     pass
 
-client = anthropic.Anthropic(api_key=os.getenv("ANTHROPIC_API_KEY"))
+def get_client():
+    return anthropic.Anthropic(api_key=os.getenv("ANTHROPIC_API_KEY"))
 
 SYSTEM_PROMPT = """Você é um especialista sênior em social media strategy e marketing digital para o mercado brasileiro.
 Analise perfis de negócios e gere planejamentos editoriais completos e estratégicos para Instagram.
@@ -140,7 +141,7 @@ async def gerar_relatorio(
 ):
     data = {k: v for k, v in locals().items() if k not in ("request",)}
 
-    message = client.messages.create(
+    message = get_client().messages.create(
         model="claude-sonnet-4-6",
         max_tokens=8000,
         system=SYSTEM_PROMPT,
